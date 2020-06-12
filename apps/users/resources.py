@@ -1,9 +1,11 @@
 
 from flask import request
 from flask_restful import Resource
+from apps.users.schemas import UserSchema
 
 class UserController(Resource):
 
+    schema = UserSchema()   
     def get(self, *args, **kwargs):
 
         id = kwargs.get('id', None)
@@ -14,11 +16,12 @@ class UserController(Resource):
 
         return {'resource': 'userController::get::'}, 200    
 
-
     def post(self, *args, **kwargs):
 
         print('resource::userController::post::'+str(request.get_json()))
         req_data = request.get_json() or None        
+        result = self.schema.load(req_data)
+        print('type::'+type(result))
         return req_data, 201
 
     def put(self, *args, **kwargs):

@@ -1,17 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from marshmallow import Schema
-from marshmallow.fields import Email, Str
-from apps.messages import MSG_FIELD_REQUIRED
-
-class UserRegistrationSchema(Schema):
-    full_name = Str(required=True, error_messages={'required': MSG_FIELD_REQUIRED})
-    email = Email(required=True, error_messages={'required': MSG_FIELD_REQUIRED})
-    password = Str(required=True, error_messages={'required': MSG_FIELD_REQUIRED})
+from marshmallow import Schema, fields
 
 class UserSchema(Schema):
-    first_name = Str(required=True, error_messages={'required': MSG_FIELD_REQUIRED})
-    last_name = Str(required=True, error_messages={'required': MSG_FIELD_REQUIRED})
-    email = Email(required=True, error_messages={'required': MSG_FIELD_REQUIRED})
-    cpf_cnpj = Str()
-    active = Boolean()
+    first_name = fields.Str()
+    last_name = fields.Str()
+    email = fields.Email()
+    cpf = fields.Str()
