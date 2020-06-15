@@ -1,9 +1,10 @@
 class User():
-    def __init__(self, first_name, last_name, email, cpf):
+    def __init__(self, first_name, last_name, email, cpf, id=None):
+        self.id = id
         first_name = first_name
-        last_name = last_name
-        email = email
-        cpf = cpf
+        self.last_name = last_name
+        self.email = email
+        self.cpf = cpf
 
 
 class Patience(User):

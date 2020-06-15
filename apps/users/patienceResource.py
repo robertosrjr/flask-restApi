@@ -11,7 +11,10 @@ class PatienceController(Resource):
         id = kwargs.get('id', None)
         if id == None:
             print('resource::userController::get::findAll')
-            return self.service.findAll(), 200
+            users =  self.service.findAll()
+            print('resource::userController::get::findAll::qtde::'+ str(len(users)))
+            print(users)
+            return users
         else:
             print('resource::userController::get::findById::'+str(id))
             return self.service.findById(id), 200
@@ -28,10 +31,13 @@ class PatienceController(Resource):
     def put(self, *args, **kwargs):
 
         print('resource::userController::put::'+str(request.get_json()))
-        req_data = request.get_json() or None        
+        req_data = request.get_json() or None   
+        result = UserSchema().load(req_data)
+        response = self.service.put(result)     
         return req_data, 200
 
     def delete(self, id):
 
         print('resource::userController::delete::'+str(id))
-        return {'id': id}, 200    
+        self.service.delete(id)
+        return None, 200    

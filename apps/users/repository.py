@@ -32,6 +32,32 @@ class PatienceRepository():
             print('PatienceRepository:post::erro...'+ str(error))
             raise
 
+    def put(self, object):
+
+        try:
+            print('PatienceRepository:put::Atualizando...'+object.get('id'))
+            db = firestore.client()
+            doc_ref = db.collection(u'patiences').document(object.get('id'))
+            doc = doc_ref.get()
+
+            doc_ref.update({
+                u'first': object.get('first_name'),
+                u'last': object.get('last_name'),
+                u'email': object.get('email'),
+                u'cpf': object.get('cpf')
+            })
+            print('PatienceRepository:put::salvo...')
+            return doc_ref.get().to_dict()
+        except google.cloud.exceptions.NotFound:
+
+            print(u'Identificador não encontrado.')    
+            raise ValueError('Identificador {} não encontrado.'.format(object.get('id')))
+        except ValueError as error:
+
+            print('PatienceRepository:put::erro...'+ str(error))
+            raise
+
+
     def get_check_email_exists(self, email):
 
         try:
@@ -58,10 +84,18 @@ class PatienceRepository():
 
     def find_all(self):
 
-        users = dict()
+        users = []
         print('PatienceRepository:findAll::')
         db = firestore.client()
         docs = db.collection(u'patiences').stream()
+
         for doc in docs:
-            users.update(doc.to_dict())
+            users.append(doc.to_dict())
+
+        print('PatienceRepository:findAll::qtde::'+ str(len(users)))
         return users
+    
+    def delete(self, id):
+        print('PatienceRepository:delete::'+id)
+        db = firestore.client()
+        db.collection(u'patiences').document(id).delete()
